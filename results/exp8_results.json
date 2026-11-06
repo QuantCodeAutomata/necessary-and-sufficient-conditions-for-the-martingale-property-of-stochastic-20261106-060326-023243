@@ -1,0 +1,30 @@
+{
+  "records": [
+    {
+      "label": "martingale",
+      "a": 0.7,
+      "b": 0.2,
+      "inf_c": 0.7,
+      "martingale_predicted": true,
+      "E_S_T": 0.9890474632518029,
+      "se_E_S_T": 0.00615676841796653,
+      "absorbed_fraction": 0.2988,
+      "survival_prob_shifted": 0.9952
+    },
+    {
+      "label": "strict_local",
+      "a": 0.3,
+      "b": 0.2,
+      "inf_c": 0.3,
+      "martingale_predicted": false,
+      "E_S_T": 0.9438449768565983,
+      "se_E_S_T": 0.005413522917616886,
+      "absorbed_fraction": 0.2988,
+      "survival_prob_shifted": 0.95945
+    }
+  ],
+  "threshold_confirmed": true,
+  "lemma_2_1_agrees": true,
+  "n_paths": 20000,
+  "full": false
+}

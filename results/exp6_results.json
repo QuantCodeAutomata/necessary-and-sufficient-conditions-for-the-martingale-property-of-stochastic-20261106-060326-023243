@@ -1,0 +1,48 @@
+{
+  "records": [
+    {
+      "rho": 0.6,
+      "gamma": 2.0,
+      "e_s_t": 0.8439083605080167,
+      "se_s_t": 0.02216531418955019,
+      "survival_prob": 0.997,
+      "exit_fraction": 0.003,
+      "agreement_within_ci": false,
+      "martingale_predicted": false,
+      "v_AB": 1.5073163881776657,
+      "v_diverges": false,
+      "mc_agrees_with_prediction": true
+    },
+    {
+      "rho": -0.6,
+      "gamma": 2.0,
+      "e_s_t": 0.9959568937143566,
+      "se_s_t": 0.005856798318038064,
+      "survival_prob": 1.0,
+      "exit_fraction": 0.0,
+      "agreement_within_ci": true,
+      "martingale_predicted": true,
+      "v_AB": null,
+      "v_diverges": true,
+      "mc_agrees_with_prediction": true
+    },
+    {
+      "rho": 0.6,
+      "gamma": 0.8,
+      "e_s_t": 0.998561000262718,
+      "se_s_t": 0.014948359357426196,
+      "survival_prob": 1.0,
+      "exit_fraction": 0.0,
+      "agreement_within_ci": true,
+      "martingale_predicted": true,
+      "v_AB": null,
+      "v_diverges": true,
+      "mc_agrees_with_prediction": true
+    }
+  ],
+  "all_regimes_consistent": true,
+  "threshold_independent_of_anisotropy": true,
+  "n_paths": 20000,
+  "n_steps": 200,
+  "full": false
+}

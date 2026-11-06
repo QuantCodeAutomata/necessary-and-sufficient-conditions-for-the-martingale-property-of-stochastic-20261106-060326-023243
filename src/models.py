@@ -439,7 +439,9 @@ def model_4_2_multi(eta1, eta2, kappa1, kappa2, alpha1, alpha2, rho1, rho2,
 
     def diffusion(y, t):
         n = y.shape[0]
-        sig = np.zeros((n, 2, 2))  # driving (Z1, Z2) via Cholesky of [[1, zz],[zz,1]]
+        # 3 independent Brownian drivers (Z1, Z2, and the residual driver of
+        # B that is independent of Z1, Z2); Y only loads on the first two.
+        sig = np.zeros((n, 2, 3))
         sig[:, 0, 0] = eta1 * np.sqrt(np.maximum(y[:, 0], 0.0))
         sig[:, 1, 0] = eta2 * zz_corr * np.sqrt(np.maximum(y[:, 1], 0.0))
         sig[:, 1, 1] = eta2 * np.sqrt(max(1.0 - zz_corr ** 2, 0.0)) * np.sqrt(np.maximum(y[:, 1], 0.0))
@@ -463,10 +465,15 @@ def model_4_2_multi(eta1, eta2, kappa1, kappa2, alpha1, alpha2, rho1, rho2,
         return (y[:, 0] > 1e-10) & (y[:, 1] > 1e-10)
 
     def shifted_drift(y, t):
+        # Girsanov shift mu_tilde = mu + sigma(y) theta(y) (paper eq. preceding
+        # Lemma 2.1), applied to the full 2-factor system, not only to Y^1:
+        # the correlation between Z^2 and (B, Z^1) also tilts Y^2's drift.
+        y1 = np.maximum(y[:, 0], 1e-10)
+        ell = u * np.sqrt(y1) + v * g(y[:, 1]) / np.sqrt(y1)
         out = np.zeros_like(y)
-        ell_cross1 = eta1 * rho1  # sigma_1 theta contribution via Z1 component
-        out[:, 0] = alpha1 + rho1 * eta1 * (u * np.sqrt(y[:, 0]) + v * g(y[:, 1]) / np.sqrt(np.maximum(y[:, 0], 1e-10))) - kappa1 * y[:, 0]
-        out[:, 1] = alpha2 - kappa2 * y[:, 1]
+        out[:, 0] = alpha1 + rho1 * eta1 * ell - kappa1 * y[:, 0]
+        cross2 = zz_corr * rho1 + np.sqrt(max(1.0 - zz_corr ** 2, 0.0)) * rho2
+        out[:, 1] = alpha2 - kappa2 * y[:, 1] + eta2 * np.sqrt(np.maximum(y[:, 1], 0.0)) * cross2 * ell
         return out
 
     return dict(drift=drift, diffusion=diffusion, theta=theta,

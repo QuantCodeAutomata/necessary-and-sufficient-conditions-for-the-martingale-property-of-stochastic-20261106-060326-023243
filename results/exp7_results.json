@@ -1,0 +1,75 @@
+{
+  "single_factor_results": [
+    {
+      "label": "martingale",
+      "a_heston": 0.3,
+      "b_32": 0.3,
+      "alpha_plus_rho_eta_b": 0.6,
+      "half_eta_sq": 0.5,
+      "martingale_predicted": true,
+      "E_S_T": 0.9753593537219087,
+      "se_E_S_T": 0.005865264139914157,
+      "survival_prob": 0.97515,
+      "exit_fraction": 0.02485,
+      "agreement_within_ci": true
+    },
+    {
+      "label": "strict_local",
+      "a_heston": 0.3,
+      "b_32": 0.7,
+      "alpha_plus_rho_eta_b": 0.4,
+      "half_eta_sq": 0.5,
+      "martingale_predicted": false,
+      "E_S_T": 0.9063827692502877,
+      "se_E_S_T": 0.022173913428595836,
+      "survival_prob": 0.922,
+      "exit_fraction": 0.078,
+      "agreement_within_ci": true
+    },
+    {
+      "label": "martingale_a_zero",
+      "a_heston": 0.0,
+      "b_32": 0.3,
+      "alpha_plus_rho_eta_b": 0.6,
+      "half_eta_sq": 0.5,
+      "martingale_predicted": true,
+      "E_S_T": 0.980331369783599,
+      "se_E_S_T": 0.004172630707810436,
+      "survival_prob": 0.97825,
+      "exit_fraction": 0.02175,
+      "agreement_within_ci": true
+    }
+  ],
+  "multi_factor_results": [
+    {
+      "label": "martingale",
+      "alpha1": 1.5,
+      "lhs_2alpha1_minus_eta1sq": 2.0,
+      "rhs_threshold": 2.0,
+      "martingale_predicted": true,
+      "E_S_T": 0.9879250533678468,
+      "se_E_S_T": 0.03042553164645014,
+      "survival_prob": 0.75695,
+      "exit_fraction": 0.24305,
+      "agreement_within_ci": false
+    },
+    {
+      "label": "strict_local",
+      "alpha1": 1.0,
+      "lhs_2alpha1_minus_eta1sq": 1.0,
+      "rhs_threshold": 2.0,
+      "martingale_predicted": false,
+      "E_S_T": 0.8880976377647183,
+      "se_E_S_T": 0.04376791530038342,
+      "survival_prob": 0.49035,
+      "exit_fraction": 0.50965,
+      "agreement_within_ci": false
+    }
+  ],
+  "single_factor_confirmed": true,
+  "heston_part_irrelevant": true,
+  "multi_factor_confirmed": true,
+  "b_crit": 0.5,
+  "n_paths": 20000,
+  "full": false
+}

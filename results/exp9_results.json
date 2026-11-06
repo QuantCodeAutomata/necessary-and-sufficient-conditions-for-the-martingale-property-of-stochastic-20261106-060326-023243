@@ -1,0 +1,41 @@
+{
+  "affine_result": {
+    "alpha_i": 0.6,
+    "b0": 0.5,
+    "b_coupling": 0.3,
+    "admissibility_7_1_holds": true,
+    "fichera_drift_F_tilde": -0.5,
+    "fichera_drift_nonpositive": true,
+    "E_S_T": 0.9997908909598271,
+    "se_E_S_T": 0.001420975202262947,
+    "survival_prob": 1.0,
+    "exit_fraction": 0.0,
+    "agreement_within_ci": true
+  },
+  "wishart_results": [
+    {
+      "label": "martingale",
+      "omega": 2.4,
+      "omega_sq": 5.76,
+      "threshold_rhs_n_plus_1_q_sq": 3.0,
+      "fichera_drift": -2.76,
+      "martingale_predicted": true,
+      "min_eigenvalue_reached_zero_fraction": 0.0097,
+      "mean_min_eigenvalue_at_T": 2.0148278647710005
+    },
+    {
+      "label": "strict_local",
+      "omega": 1.2,
+      "omega_sq": 1.44,
+      "threshold_rhs_n_plus_1_q_sq": 3.0,
+      "fichera_drift": 1.56,
+      "martingale_predicted": false,
+      "min_eigenvalue_reached_zero_fraction": 0.8998,
+      "mean_min_eigenvalue_at_T": 0.16756127796642104
+    }
+  ],
+  "affine_confirmed": true,
+  "wishart_threshold_matches_sign": true,
+  "n_paths": 20000,
+  "full": false
+}

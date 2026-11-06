@@ -118,11 +118,11 @@ EXP5_LAMBDA = 1.0                # OU mean-reversion speed
 EXP5_ETA_OU = 0.5                 # OU volatility
 EXP5_M_DIAG = (2.0, 1.0, 1.0)      # M = diag(2,1,1) of Example 5.2
 EXP5_C_BASE = 0.2                 # c(z) = C_BASE + C_SPAN * z^2/(1+z^2)
-EXP5_C_SPAN_MARTINGALE = 0.2      # sup c = 0.4 < (m-2)/2 = 0.5 -> true martingale
-EXP5_C_SPAN_STRICT = 0.5          # sup c = 0.7 > 0.5 -> strict local martingale
-EXP5_U0 = (1.0, 1.0, 1.0)         # starting point of U
+EXP5_C_SPAN_MARTINGALE = 0.2      # sup c = 0.4 < (m-2)/2 = 0.5 -> true martingale (Bessel dim 2.2, transient from 0)
+EXP5_C_SPAN_STRICT = 1.3          # sup c = 1.5 > 0.5 -> strict local martingale (Bessel dim 0.0, hits 0 quickly)
+EXP5_U0 = (0.3, 0.3, 0.3)         # starting point of U, |U0|=0.52 (close enough that hitting 0 is observable within EXP5_HORIZON)
 EXP5_Z0 = 0.0
-EXP5_HORIZON = 1.0
+EXP5_HORIZON = 6.0                # long enough for the strict_local (Bessel dim 0) regime to hit the origin with high probability
 
 # --------------------------------------------------------------------
 # Experiment 6: Example 6.2 anisotropic multi-factor model and
