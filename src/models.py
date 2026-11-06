@@ -218,14 +218,17 @@ def power_volatility_anisotropic(dim, kappa, eta, gamma, rho, M_diag, q_base, om
         return np.ones(y.shape[0], dtype=bool)
 
     def shifted_drift(y, t):
+        # mu_tilde = mu + sigma(y) theta(y). Here sigma(y) theta(y) =
+        # eta*sqrt(q(y))*M @ (tangential/sqrt(q(y))) = eta*rho*|z|^(gamma-1)*(M z),
+        # independent of q(y): the sqrt(q(y)) loading of the diffusion exactly
+        # cancels the 1/sqrt(q(y)) built into theta's tangential part, so the
+        # correction must NOT be multiplied again by q(y) outside (paper
+        # Section 6, Example 6.2: the threshold is the isotropic one of
+        # Example 6.1, unaffected by the time-change rate q).
         z = (M_inv @ y.T).T
-        Om = omega_matrix(z)
-        rotated = np.einsum("pij,pj->pi", Om, z)
         norm_z = np.maximum(np.linalg.norm(z, axis=1), 1e-10)
-        qy = q(y)
-        extra = rho * eta * np.sqrt(np.maximum(qy, 1e-10)) * norm_z ** (gamma - 1)
-        lin = (-kappa + extra)[:, None] * z + rotated
-        return qy[:, None] * (M @ lin.T).T
+        correction = (rho * eta * norm_z ** (gamma - 1))[:, None] * (M @ z.T).T
+        return drift(y, t) + correction
 
     return dict(drift=drift, diffusion=diffusion, theta=theta,
                 domain_indicator=domain_indicator, shifted_drift=shifted_drift, M_inv=M_inv)
@@ -338,11 +341,10 @@ def weighted_distance_model(m, k, lam, eta_ou, M_diag, c_base, c_span, exit_eps=
     *unit*-intensity noise (unlike the CIR factors elsewhere in this
     repository, whose diffusion coefficient vanishes at the boundary and
     therefore lets an Euler scheme approach an arbitrarily small floor).
-    Resolving R down to machine-scale tolerances would require a step
-    size far below what a fixed Monte Carlo budget allows, so `exit_eps`
-    is the numerical surrogate for "R=0" used by `domain_indicator`: a
-    finite but small radius, analogous to the floor used for CIR-type
-    boundaries."""
+    Resolving R down to machine-scale tolerances would require an
+    impractically small step size, so `exit_eps` is the numerical
+    surrogate for "R=0" used by `domain_indicator`: a finite but small
+    radius, analogous to the floor used for CIR-type boundaries."""
     M = np.diag(M_diag)
 
     def c_fun(z):
@@ -468,10 +470,18 @@ def model_4_2_multi(eta1, eta2, kappa1, kappa2, alpha1, alpha2, rho1, rho2,
         # Girsanov shift mu_tilde = mu + sigma(y) theta(y) (paper eq. preceding
         # Lemma 2.1), applied to the full 2-factor system, not only to Y^1:
         # the correlation between Z^2 and (B, Z^1) also tilts Y^2's drift.
+        #
+        # (sigma theta)_1 = eta1*sqrt(y1)*rho1*ell(y) = eta1*rho1*(u*y1+v*g(y2));
+        # the sqrt(y1) loading of Y^1 on its own driver Z^1 cancels the
+        # 1/sqrt(y1) singularity of ell(y) = u*sqrt(y1)+v*g(y2)/sqrt(y1),
+        # leaving the affine drift mu_tilde_1 = c(z) - k*x of the methodology
+        # note (c(z)=alpha1+rho1*eta1*v*g(z), k=kappa1-rho1*eta1*u). Dropping
+        # the sqrt(y1) factor here would wrongly keep an O(1/sqrt(y1))
+        # singular pull that the model does not have.
         y1 = np.maximum(y[:, 0], 1e-10)
         ell = u * np.sqrt(y1) + v * g(y[:, 1]) / np.sqrt(y1)
         out = np.zeros_like(y)
-        out[:, 0] = alpha1 + rho1 * eta1 * ell - kappa1 * y[:, 0]
+        out[:, 0] = alpha1 + rho1 * eta1 * (u * y[:, 0] + v * g(y[:, 1])) - kappa1 * y[:, 0]
         cross2 = zz_corr * rho1 + np.sqrt(max(1.0 - zz_corr ** 2, 0.0)) * rho2
         out[:, 1] = alpha2 - kappa2 * y[:, 1] + eta2 * np.sqrt(np.maximum(y[:, 1], 0.0)) * cross2 * ell
         return out
@@ -513,10 +523,14 @@ def absorbed_factor_model(lam, eta_ou, rho, a, b):
         return y[:, 0] > 1e-10
 
     def shifted_drift(y, t):
+        # Paper's shifted system (6.10): dX = c(Z)/X dt + dW~^0,
+        # dZ^i = (-lam_i Z^i + eta_i rho_i c(Z)/X) dt + eta_i dW~^i (PLUS sign,
+        # since sigma(y) theta(y) = (c/x, rho*eta_ou*c/x) with the correlation
+        # row of sigma carrying a positive rho*eta_ou coefficient).
         x = np.maximum(y[:, 0], 1e-10)
         out = np.zeros_like(y)
         out[:, 0] = c_fun(y[:, 1]) / x
-        out[:, 1] = -lam * y[:, 1] - eta_ou * rho * c_fun(y[:, 1]) / x
+        out[:, 1] = -lam * y[:, 1] + eta_ou * rho * c_fun(y[:, 1]) / x
         return out
 
     return dict(drift=drift, diffusion=diffusion, theta=theta,

@@ -9,9 +9,9 @@ s*E_y[S_tau] = s*(1-m(tau,y)) is a second, distinct solution, exhibiting
 non-uniqueness. The Doob transform h=1+s turns L into L^h = L +
 (s/(1+s)) <sigma theta, grad_y .>, a bounded perturbation that makes the
 probabilistic argument (Lemma 2.1) the uniqueness mechanism; no separate
-finite-difference discretization of (B.3) is attempted here, since the
-paper specifies no boundary condition at the point where volatility is
-unbounded and no discretization scheme (Appendix B, uncertainties).
+finite-difference discretization of (B.3) is attempted here, since Appendix
+B specifies no boundary condition at the point where volatility is
+unbounded and gives no discretization scheme for the PDE.
 
 Tested on the 4/2 model (Example 6.5, same coefficients as Experiment 7)
 and its multi-factor extension (Theorem 6.2, Example 6.6 parameters).

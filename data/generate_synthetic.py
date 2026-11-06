@@ -10,12 +10,13 @@ module owns the random-number generation; src/models.py and
 src/stochastic_exponential.py hold the deterministic formulas applied
 to the simulated paths.
 
-Custom implementation (paper implementation notes: Euler-Maruyama with a
-full-truncation floor for square-root-type diffusions, following Lord,
-Koekkoek and Van Dijk's bias-reduced scheme for CIR factors): no library
-inspected via Context7 (sdeint is not indexed; the project's SDE
-toolbox -- arch, hmmlearn, vectorbt -- does not implement general
-multi-dimensional Euler-Maruyama simulation with domain-exit tracking).
+Custom implementation: a general multi-dimensional Euler-Maruyama scheme
+with domain-exit tracking and a full-truncation floor for square-root-type
+diffusions (following Lord, Koekkoek and Van Dijk's bias-reduced scheme for
+CIR factors), since none of the available quantitative libraries (arch,
+hmmlearn, ruptures, skfolio, pyportfolioopt, copulae, vectorbt, quantstats,
+ta) implements pathwise simulation of general multi-dimensional diffusions
+with domain-exit detection.
 """
 
 from __future__ import annotations

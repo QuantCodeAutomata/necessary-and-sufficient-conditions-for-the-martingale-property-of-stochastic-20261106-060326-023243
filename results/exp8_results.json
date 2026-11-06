@@ -9,7 +9,7 @@
       "E_S_T": 0.9890474632518029,
       "se_E_S_T": 0.00615676841796653,
       "absorbed_fraction": 0.2988,
-      "survival_prob_shifted": 0.9952
+      "survival_prob_shifted": 0.99605
     },
     {
       "label": "strict_local",
@@ -20,7 +20,7 @@
       "E_S_T": 0.9438449768565983,
       "se_E_S_T": 0.005413522917616886,
       "absorbed_fraction": 0.2988,
-      "survival_prob_shifted": 0.95945
+      "survival_prob_shifted": 0.96275
     }
   ],
   "threshold_confirmed": true,

@@ -1,10 +1,10 @@
 """Discretisation of the stochastic exponential S = E(int theta(Y)-dW).
 
 Custom implementation (paper Section 1.1 / eq. (1.3)-(1.4)): no library in
-the research-library list (arch, hmmlearn, ruptures, skfolio, pyportfolio
-opt, copulae, vectorbt, quantstats, ta) implements pathwise simulation of a
-stochastic exponential driven by a user-specified diffusion; this is the
-custom Euler discretisation described in the implementation notes.
+the available quantitative-library set (arch, hmmlearn, ruptures, skfolio,
+pyportfolioopt, copulae, vectorbt, quantstats, ta) implements pathwise
+simulation of a stochastic exponential driven by a general diffusion; this
+is a direct Euler discretisation of the defining SDE below.
 
 The exact (Stratonovich-free) Euler-Maruyama discretisation of
     dS_t = S_t theta(Y_t) . dW_t,  S_0 = 1
