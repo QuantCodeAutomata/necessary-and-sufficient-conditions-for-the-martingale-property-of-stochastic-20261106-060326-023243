@@ -1,0 +1,76 @@
+{
+  "single_factor_results": [
+    {
+      "c": 0.2,
+      "E_S_T": 0.8729443361308533,
+      "se_E_S_T": 0.0020318031123057537,
+      "survival_prob": 0.8728,
+      "se_survival": 0.0023560577242504053,
+      "agreement_within_ci": true,
+      "exit_fraction": 0.1272,
+      "scale_integral_diverges": true,
+      "scale_criterion_predicts_martingale": true,
+      "condition_T_fails": true,
+      "analytic_martingale_threshold": true
+    },
+    {
+      "c": 0.5,
+      "E_S_T": 0.8070410244724951,
+      "se_E_S_T": 0.0021573832223903953,
+      "survival_prob": 0.80655,
+      "se_survival": 0.0027930905597563426,
+      "agreement_within_ci": true,
+      "exit_fraction": 0.19345,
+      "scale_integral_diverges": true,
+      "scale_criterion_predicts_martingale": true,
+      "condition_T_fails": true,
+      "analytic_martingale_threshold": true
+    },
+    {
+      "c": 0.8,
+      "E_S_T": 0.7299535214228201,
+      "se_E_S_T": 0.002317095772676798,
+      "survival_prob": 0.73125,
+      "se_survival": 0.0031346725307438415,
+      "agreement_within_ci": true,
+      "exit_fraction": 0.26875,
+      "scale_integral_diverges": false,
+      "scale_criterion_predicts_martingale": false,
+      "condition_T_fails": true,
+      "analytic_martingale_threshold": false
+    }
+  ],
+  "coupled_results": [
+    {
+      "regime": "martingale",
+      "a": 0.2,
+      "b": 0.05,
+      "sup_c": 0.25,
+      "E_S_T": 0.8078881934182184,
+      "se_E_S_T": 0.002391147010006673,
+      "survival_prob": 0.80565,
+      "se_survival": 0.002798017847512771,
+      "agreement_within_ci": true,
+      "exit_fraction": 0.19435,
+      "analytic_martingale_threshold": true
+    },
+    {
+      "regime": "strict_local",
+      "a": 0.2,
+      "b": 0.6,
+      "sup_c": 0.8,
+      "E_S_T": 0.7977353345351649,
+      "se_E_S_T": 0.0023897872872025677,
+      "survival_prob": 0.79545,
+      "se_survival": 0.002852273632560523,
+      "agreement_within_ci": true,
+      "exit_fraction": 0.20455,
+      "analytic_martingale_threshold": false
+    }
+  ],
+  "threshold_c_half_confirmed": false,
+  "coupled_threshold_confirmed": false,
+  "condition_T_fails_for_all_c": true,
+  "n_paths": 20000,
+  "full": false
+}

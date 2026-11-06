@@ -93,13 +93,19 @@ EXP4_C_VALUES = (0.2, 0.5, 0.8)   # scalar c in Example 3.2: martingale iff c<=1
 EXP4_KAPPA_CUTOFF = 2.0           # cutoff scale for theta/h beyond y=e^-2, not specified in the paper
 
 # coupled Theorem 3.2 case: c(z) = a + b*z^2/(1+z^2), threshold a+b<=1/2
-EXP4_COUPLED_A = 0.3
-EXP4_COUPLED_B_MARTINGALE = 0.1    # a+b = 0.40 <= 0.5  -> true martingale (away from the critical value for faster MC convergence)
-EXP4_COUPLED_B_STRICT = 0.4        # a+b = 0.70 > 0.5   -> strict local martingale
+EXP4_COUPLED_A = 0.2
+EXP4_COUPLED_B_MARTINGALE = 0.05   # a+b = 0.25 <= 0.5  -> true martingale (well away from the critical value for faster MC convergence)
+EXP4_COUPLED_B_STRICT = 0.6        # a+b = 0.80 > 0.5   -> strict local martingale
 EXP4_COUPLED_LAMBDA = 1.0          # OU mean reversion lambda_1
 EXP4_COUPLED_ETA = 0.5             # OU volatility eta_1
 EXP4_COUPLED_RHO = 0.3             # correlation between W^0 and W^1
 EXP4_COUPLED_KAPPA = 1.0           # CIR mean-reversion speed kappa of X
+# The critical CIR boundary (2*alpha=eta^2) makes Euler-Maruyama converge
+# only logarithmically slowly near y=0 (not specified in the paper, which
+# gives no numerical scheme for this case); a finer time grid than the
+# other experiments is used here to resolve the mass-loss trend.
+EXP4_N_STEPS_PER_UNIT_TIME_RUN = 2000
+EXP4_N_STEPS_PER_UNIT_TIME_FULL = 20000
 EXP4_COUPLED_Z0 = 0.0
 
 # --------------------------------------------------------------------
