@@ -41,32 +41,64 @@ def feller_integral_v_AB(A, B, r0: float, r_inf_cutoff: float = 1e4,
                               int_{r0}^rho C(s)/A(s) ds  d rho,
         C(rho) = exp( int_{r0}^rho B(s) ds ).
 
-    A finite but large cutoff r_inf_cutoff replaces infinity; the
-    function reports np.inf when the integrand does not decay (i.e. the
-    truncated integral keeps growing with the cutoff), by comparing the
-    truncated value at r_inf_cutoff/2 and at r_inf_cutoff.
+    Direct exp-space evaluation of this nested integral is numerically
+    unusable whenever B(s) grows without bound at infinity (the case that
+    matters for Examples 6.1/6.2): C(rho) then overflows after a short
+    distance, long before the cutoff needed to see whether v converges.
+
+    The function instead classifies the tail behaviour of B and uses the
+    classical reduction that is exact in each regime:
+
+    * If B(s) does NOT diverge to +infinity (B bounded above, or B -> -inf,
+      covering the martingale cases rho <= 0 or p <= 1 of Example 6.1), the
+      inner integral int_{r0}^rho C(s)/A(s) ds tends to a finite limit or to
+      +infinity no faster than 1/C(rho) decays, so the outer integrand
+      inner(rho)/C(rho) stays bounded away from 0 and v_{A,B}(infinity) = +inf
+      (non-explosion, true martingale) unconditionally -- no cancellation can
+      make the outer integral converge. This is checked directly on log C,
+      which never overflows.
+    * If B(s) -> +infinity (the explosive case rho > 0, p > 1), Laplace's
+      method for an integral whose exponent has diverging derivative gives
+      the standard asymptotic equivalence
+
+          int_{r0}^rho C(s)/A(s) ds  ~  C(rho) / (A(rho) B(rho))  as rho -> infinity,
+
+      so v_{A,B}(infinity) < infinity iff int^infinity dr/(A(r)B(r)) < infinity.
+      This reduced integral never involves C and is evaluated directly in
+      linear space, with the same half-vs-full cutoff growth test used to
+      decide convergence.
     """
     s_grid = np.linspace(r0, r_inf_cutoff, n_points)
     b_vals = np.array([B(s) for s in s_grid])
-    log_C = integrate.cumulative_trapezoid(b_vals, s_grid, initial=0.0)
-    C_vals = np.exp(log_C - log_C.max())  # rescaled for numerical stability (cancels below)
+    log_C = integrate.cumulative_trapezoid(b_vals, s_grid, initial=0.0)  # finite, no exp taken
 
-    inv_A = np.array([1.0 / A(s) for s in s_grid])
-    inner = integrate.cumulative_trapezoid(C_vals * inv_A, s_grid, initial=0.0)
-    integrand = inner / C_vals
+    tail = slice(3 * n_points // 4, n_points)
+    b_tail, s_tail = b_vals[tail], s_grid[tail]
+    slope = np.polyfit(s_tail, b_tail, 1)[0]
+    half = len(b_tail) // 2
+    mean_first, mean_second = b_tail[:half].mean(), b_tail[half:].mean()
+    b_diverges_to_plus_inf = (
+        b_vals[-1] > 0 and slope > 1e-8 and mean_first > 0
+        and mean_second > 1.05 * mean_first
+    )
 
-    def _partial(upto_idx: int) -> float:
-        return float(np.trapz(integrand[: upto_idx + 1], s_grid[: upto_idx + 1]))
-
-    half_idx = n_points // 2
-    v_half = _partial(half_idx)
-    v_full = _partial(n_points - 1)
-    # Divergence diagnostic: if the second half contributes at least as much
-    # as the first, the integral has not started converging before the
-    # cutoff, so report divergence (true martingale / non-explosion).
-    if (v_full - v_half) > 0.05 * max(v_half, 1e-8):
+    if not b_diverges_to_plus_inf:
+        # B does not blow up: the outer integral diverges unconditionally.
         return np.inf
-    return v_full
+
+    a_vals = np.array([A(s) for s in s_grid])
+    mask = b_vals > 0
+    if not mask.any():
+        return np.inf
+    g = 1.0 / (a_vals[mask] * b_vals[mask])  # Laplace-equivalent integrand 1/(A*B)
+    cum = integrate.cumulative_trapezoid(g, s_grid[mask], initial=0.0)
+    half_idx = len(cum) // 2
+    v_half, v_full = cum[half_idx], cum[-1]
+    if v_half <= 0:
+        return float(v_full)
+    if (v_full - v_half) > 0.05 * v_half:
+        return np.inf
+    return float(v_full)
 
 
 def scale_density_log_cir(y: np.ndarray, c: float) -> np.ndarray:

@@ -1,0 +1,60 @@
+{
+  "records": [
+    {
+      "rho": 0.7,
+      "p": 2.0,
+      "e_s_t": 0.7371394989587141,
+      "se_s_t": 0.031849620643905244,
+      "survival_prob": 0.98135,
+      "exit_fraction": 0.01865,
+      "agreement_within_ci": false,
+      "martingale_predicted": false,
+      "v_AB": 1.112833936943164,
+      "v_diverges": false,
+      "mc_agrees_with_prediction": true
+    },
+    {
+      "rho": -0.7,
+      "p": 2.0,
+      "e_s_t": 0.9986706156683048,
+      "se_s_t": 0.007332018973250114,
+      "survival_prob": 1.0,
+      "exit_fraction": 0.0,
+      "agreement_within_ci": true,
+      "martingale_predicted": true,
+      "v_AB": null,
+      "v_diverges": true,
+      "mc_agrees_with_prediction": true
+    },
+    {
+      "rho": 0.7,
+      "p": 0.8,
+      "e_s_t": 0.9916582197987551,
+      "se_s_t": 0.01664084769382651,
+      "survival_prob": 1.0,
+      "exit_fraction": 0.0,
+      "agreement_within_ci": true,
+      "martingale_predicted": true,
+      "v_AB": null,
+      "v_diverges": true,
+      "mc_agrees_with_prediction": true
+    },
+    {
+      "rho": 0.0,
+      "p": 2.0,
+      "e_s_t": 0.9740705502455146,
+      "se_s_t": 0.018727602293044817,
+      "survival_prob": 1.0,
+      "exit_fraction": 0.0,
+      "agreement_within_ci": true,
+      "martingale_predicted": true,
+      "v_AB": null,
+      "v_diverges": true,
+      "mc_agrees_with_prediction": true
+    }
+  ],
+  "all_regimes_consistent": true,
+  "n_paths": 20000,
+  "n_steps": 200,
+  "full": false
+}
